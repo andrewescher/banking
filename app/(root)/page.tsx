@@ -5,12 +5,25 @@ import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
 
+
+
+
 const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
   const currentPage = Number(page as string) || 1;
   const loggedIn = await getLoggedInUser();
   const accounts = await getAccounts({ 
     userId: loggedIn.$id 
   })
+
+  if (!loggedIn) {
+    console.error("Error: loggedIn is null or undefined.");
+    return;
+  }
+  if (!loggedIn.$id) {
+    console.error("Error: loggedIn.$id is undefined.");
+    return;
+  }
+
 
   if(!accounts) return;
   

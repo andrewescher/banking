@@ -110,11 +110,26 @@ export async function getLoggedInUser() {
     const { account } = await createSessionClient();
     const result = await account.get();
 
-    const user = await getUserInfo({ userId: result.$id})
+    // Fetch user information
+    const user = await getUserInfo({ userId: result.$id });
 
-    return parseStringify(user);
+    // Check if user is null or undefined
+    if (!user) {
+      console.error("getUserInfo returned null or undefined");
+      return null;
+    }
+
+    // Log the user data before parsing
+    console.log("User data before parseStringify:", user);
+
+    const parsedUser = parseStringify(user);
+
+    // Log the user data after parsing
+    console.log("User data after parseStringify:", parsedUser);
+
+    return parsedUser;
   } catch (error) {
-    console.log(error)
+    console.error("Failed to get logged in user:", error);
     return null;
   }
 }
